@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accessibility Maturity Assessment</title>
+<style>
+  :root{
+    --l1:#c62828; --l2:#ef6c00; --l3:#f9a825; --l4:#7cb342; --l5:#2e7d32;
+    --bg:#f4f6f8; --card:#ffffff; --text:#1a1a1a; --muted:#5f6368; --accent:#1a73e8;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    background:var(--bg); color:var(--text); margin:0; padding:0; line-height:1.5;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:24px 16px 80px;}
+  header.top{text-align:center; padding:32px 16px 8px;}
+  header.top h1{font-size:1.6rem; margin:0 0 8px;}
+  header.top p{color:var(--muted); margin:0;}
+  .card{
+    background:var(--card); border-radius:14px; padding:28px;
+    box-shadow:0 2px 10px rgba(0,0,0,.06); margin-top:20px;
+  }
+  .progress-wrap{margin-bottom:20px;}
+  .progress-bar{height:8px; background:#e0e3e7; border-radius:6px; overflow:hidden;}
+  .progress-fill{height:100%; background:var(--accent); transition:width .3s ease;}
+  .progress-label{font-size:.85rem; color:var(--muted); margin-top:6px; text-align:right;}
+  fieldset{border:none; padding:0; margin:0;}
+  legend.qtitle{font-size:1.15rem; font-weight:600; margin-bottom:4px; padding:0;}
+  .qcategory{
+    display:inline-block; font-size:.75rem; font-weight:600; letter-spacing:.03em;
+    color:var(--accent); text-transform:uppercase; margin-bottom:10px;
+  }
+  .option{
+    display:block; border:2px solid #e0e3e7; border-radius:10px; padding:14px 16px;
+    margin-bottom:10px; cursor:pointer; transition:border-color .15s, background .15s;
+  }
+  .option:hover{border-color:var(--accent);}
+  .option input{margin-right:10px; transform:scale(1.15); vertical-align:middle;}
+  .option .lvl-label{font-weight:600; margin-right:6px;}
+  .option.selected{border-color:var(--accent); background:#eaf1fd;}
+  .lvl-tag{
+    display:inline-block; width:10px; height:10px; border-radius:50%;
+    margin-right:8px; vertical-align:middle;
+  }
+  .nav-buttons{display:flex; justify-content:space-between; margin-top:24px;}
+  button{
+    font-size:.95rem; padding:10px 22px; border-radius:8px; border:none;
+    cursor:pointer; font-weight:600; transition:opacity .15s;
+  }
+  button.primary{background:var(--accent); color:#fff;}
+  button.secondary{background:#e8eaed; color:var(--text);}
+  button:disabled{opacity:.4; cursor:not-allowed;}
+  button:hover:not(:disabled){opacity:.88;}
+  .intro-actions, .result-actions{display:flex; gap:12px; flex-wrap:wrap; margin-top:20px;}
+  .hidden{display:none !important;}
+  .domain-row{margin-bottom:16px;}
+  .domain-name{display:flex; justify-content:space-between; font-size:.9rem; margin-bottom:4px;}
+  .domain-track{height:12px; background:#e0e3e7; border-radius:6px; overflow:hidden;}
+  .domain-fill{height:100%; border-radius:6px; transition:width .5s ease;}
+  .overall-box{
+    text-align:center; padding:24px; border-radius:12px; margin-bottom:24px;
+    color:#fff;
+  }
+  .overall-box .lvl-num{font-size:2.2rem; font-weight:800; margin:0;}
+  .overall-box .lvl-name{font-size:1.2rem; font-weight:600; margin:4px 0 12px;}
+  .overall-box p{margin:0; opacity:.95; font-size:.95rem;}
+  .summary-table{width:100%; border-collapse:collapse; margin-top:20px; font-size:.88rem;}
+  .summary-table th, .summary-table td{text-align:left; padding:8px 6px; border-bottom:1px solid #eee;}
+  .summary-table th{color:var(--muted); font-weight:600;}
+  #liveregion{position:absolute; left:-9999px;}
+  footer{text-align:center; color:var(--muted); font-size:.8rem; margin-top:40px;}
+  @media print{
+    button, .nav-buttons, .intro-actions{display:none !important;}
+  }
+</style>
+</head>
+<body>
+<div id="liveregion" aria-live="polite"></div>
+<div class="wrap">
+  <header class="top">
+    <h1>Accessibility Maturity Assessment</h1>
+    <p>Evaluate your project's current digital accessibility maturity across 16 key dimensions.</p>
+  </header>
+
+  <!-- INTRO -->
+  <section id="intro" class="card">
+    <h2>Before you start</h2>
+    <p>This assessment contains 16 questions covering strategy, design, development, testing, content, compliance, and culture. For each question, choose the description that best matches your project's <strong>current</strong> state.</p>
+    <p>It takes about 8–10 minutes. Your answers stay in your browser unless you choose to export them.</p>
+    <div class="intro-actions">
+      <button class="primary" id="startBtn">Start Assessment</button>
+      <button class="secondary hidden" id="resumeBtn">Resume Previous Session</button>
+    </div>
+  </section>
+
+  <!-- QUESTION -->
+  <section id="quiz" class="card hidden">
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-label" id="progressLabel">Question 1 of 16</div>
+    </div>
+    <form id="qForm">
+      <fieldset>
+        <span class="qcategory" id="qCategory"></span>
+        <legend class="qtitle" id="qTitle"></legend>
+        <div id="qOptions"></div>
+      </fieldset>
+    </form>
+    <div class="nav-buttons">
+      <button class="secondary" id="prevBtn">← Back</button>
+      <button class="primary" id="nextBtn" disabled>Next →</button>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section id="results" class="card hidden">
+    <div class="overall-box" id="overallBox">
+      <p class="lvl-num" id="overallNum"></p>
+      <p class="lvl-name" id="overallName"></p>
+      <p id="overallDesc"></p>
+    </div>
+
+    <h3>Maturity by domain</h3>
+    <div id="domainChart"></div>
+
+    <h3>Detailed answers</h3>
+    <table class="summary-table">
+      <thead><tr><th>#</th><th>Question</th><th>Level selected</th></tr></thead>
+      <tbody id="summaryBody"></tbody>
+    </table>
+
+    <div class="result-actions">
+      <button class="secondary" id="copyBtn">Copy Results</button>
+      <button class="secondary" id="printBtn">Print / Save PDF</button>
+      <button class="primary" id="restartBtn">Restart Assessment</button>
+    </div>
+  </section>
+
+  <footer>Accessibility Maturity Model &middot; self-assessment tool</footer>
+</div>
+
+<script>
+(function(){
+
+const LEVEL_COLORS = {1:"var(--l1)",2:"var(--l2)",3:"var(--l3)",4:"var(--l4)",5:"var(--l5)"};
+const LEVEL_NAMES = {1:"Opportunistic",2:"Developing",3:"Engaging",4:"Sustainable",5:"Transformative"};
+
+const questions = [
+{id:1, category:"Strategy & Governance", title:"How is digital accessibility supported, governed, and backed by stakeholders in your organization?", options:[
+"No support for accessibility and no engagement with stakeholders.",
+"Occasional leadership support without clear ownership, and only sporadic communication with stakeholders.",
+"An accessibility champion is identified with basic governance, and stakeholders are regularly informed about accessibility efforts.",
+"Clear ownership and defined accessibility roles are established with regular reviews. Stakeholders are actively involved in planning and reviews.",
+"Accessibility is a strategic priority with C-level sponsorship and a dedicated board. Stakeholders actively co-create the accessibility strategy and innovation."]},
+
+{id:2, category:"Strategy & Governance", title:"Does your organization have a defined accessibility roadmap and clear metrics (KPIs)?", options:[
+"No accessibility roadmap or KPIs.",
+"Initial roadmap, basic KPIs defined.",
+"Roadmap and KPIs tracked, with some team accountability.",
+"Roadmap and KPIs are fully integrated into product strategy, with regular reporting.",
+"Accessibility KPIs actively drive innovation, public reporting, and industry benchmarking."]},
+
+{id:3, category:"Process Integration", title:"How early and systematically is accessibility built into your SDLC and user story requirements?", options:[
+"Accessibility is not considered in either the SDLC or product requirements.",
+"Accessibility is considered in some SDLC stages, and only high-level requirements exist in user stories, epics, tickets, or Confluence.",
+"Accessibility is included in most SDLC stages, and detailed acceptance criteria are routinely added to user stories.",
+"Accessibility is built into every SDLC stage and actively tracked, with strict accessibility criteria embedded directly in the Definition of Done (DoD) and Definition of Ready (DoR).",
+"All sustainable processes are in place, enhanced by next-generation, AI-driven requirement generation and validation with continuous feedback loops."]},
+
+{id:4, category:"Design & Development", title:"How is accessibility addressed during your project's UX/UI design phase?", options:[
+"Accessibility is not considered in design.",
+"Accessibility is occasionally considered in design, but not consistently or systematically.",
+"Designs are checked by Figma plugins, and identified violations are fixed before handoff.",
+"Accessibility is considered during design creation with manual reviews and fully annotated layouts. No accessibility issues are found at the design level.",
+"Accessibility design processes are enhanced by AI tools and active user co-creation."]},
+
+{id:5, category:"Design & Development", title:"How do developers ensure coding accessibility and utilize standardized reusable components?", options:[
+"No accessibility coding standards, guidelines, or accessible component libraries are used.",
+"Some developers use basic practices (ARIA roles, alt text) and auto-tools, utilizing some accessible components without standardization.",
+"Most developers follow guidelines, use automated tools + manual checks (screen readers, keyboard), and utilize accessible components in most new features.",
+"Accessibility best practices are enforced via code reviews, linters, and quality gates in development pipelines, utilizing a standardized, fully accessible library of shared components.",
+"Developers utilize AI-driven code analysis, auto-remediation, and AI-generated and validated component libraries."]},
+
+{id:6, category:"Design & Development", title:"How does your team handle the accessibility of external third-party widgets, libraries, and components?", options:[
+"Accessibility of third-party components is unknown or not considered.",
+"Accessibility of third-party components is known but not actively addressed.",
+"The team actively seeks accessible alternatives or workarounds for third-party components.",
+"Only accessible third-party components are used, supported by regular reviews and audits.",
+"Proactive collaboration with vendors is established; custom or AI-enhanced accessible components are developed and shared."]},
+
+{id:7, category:"Content Accessibility", title:"How accessible are the digital documents, assets, and communications produced by your team?", options:[
+"Content, PDFs, and emails are provided without accessibility considerations.",
+"Some core content is created with basic accessibility, but PDFs and emails are often not accessible.",
+"Main content is accessible; some PDFs and emails are made accessible upon request.",
+"All content, PDFs, and emails are consistently created and delivered in accessible formats for all users.",
+"Content, PDFs, and emails are created accessible by default using advanced tools/AI; personalized accessible formats are provided automatically."]},
+
+{id:8, category:"Testing & QA", title:"How is manual accessibility testing integrated into your quality assurance process?", options:[
+"No accessibility testing.",
+"New features are tested with significant delays.",
+"In-sprint manual accessibility testing is conducted, but it is limited to selected WCAG criteria.",
+"Manual testing coverage is comprehensive: testing covers full WCAG criteria using proper tooling, configurations, and multiple languages.",
+"AI-driven manual testing and predictive issue detection are employed."]},
+
+{id:9, category:"Testing & QA", title:"How is automated accessibility testing integrated into your development and build pipelines?", options:[
+"No automated tests.",
+"No automated tests.",
+"Automation covers basic smoke testing only.",
+"Automated testing coverage includes proper tooling, configurations, and languages, covering both new features and regression testing. AI solutions are in place for a limited scope.",
+"AI solutions are mature, delivering fully autonomous accessibility testing and reporting."]},
+
+{id:10, category:"Testing & QA", title:"How is accessibility validated on mobile viewports and native mobile applications?", options:[
+"Mobile testing is not performed.",
+"Mobile testing is done solely on emulators or desktop browser developer tools.",
+"Mobile testing has limited coverage on actual physical mobile devices.",
+"Mobile testing is systematically done on real devices or mobile cloud farms utilizing Bluetooth keyboards and switch controls.",
+"Mobile accessibility is validated continuously with AI integrations and real user testers with disabilities."]},
+
+{id:11, category:"User Involvement", title:"How does your team gather and act on feedback from users with disabilities?", options:[
+"No feedback from users with disabilities.",
+"Limited feedback from users with disabilities.",
+"Occasional feedback from users with disabilities is collected.",
+"Active involvement of users with disabilities in user testing and systematic feedback sessions.",
+"Users with disabilities co-create and validate features from early concepts to launch."]},
+
+{id:12, category:"Compliance & Reporting", title:"What standards (such as WCAG, legal, or corporate regulations) do you target and achieve?", options:[
+"Neither WCAG nor local/corporate accessibility standards are targeted or considered.",
+"Only partial WCAG standards are targeted (e.g., WCAG 2.0 or Level A), and ad-hoc checks are performed for local/corporate compliance.",
+"The team targets current WCAG standards (2.1/2.2) for main features (not full coverage) and conducts regular reviews for local/corporate compliance.",
+"Compliance with WCAG 2.2 AA is systematically targeted and achieved across the product, which is actively assessed against relevant local and corporate accessibility laws.",
+"Proactive adoption of emerging standards (such as WCAG 2.2 AAA) occurs, with proactive global monitoring, public compliance statements, and industry leadership."]},
+
+{id:13, category:"Compliance & Reporting", title:"How is your product's compliance state monitored, and what metrics are regularly reported?", options:[
+"Product compliance state is unknown (or based on auto-tools only), and no accessibility metrics are gathered.",
+"Compliance state is only known for limited parts of the product, and metrics are based strictly on raw automated tools.",
+"The compliance state of the overall product is known, and periodic accessibility reports and metrics are compiled.",
+"The compliance state is actively monitored, the VPAT is regularly updated, and structured metrics analyses with remediation recommendations are provided on a regular basis.",
+"Compliance state and metrics are public, updated in real-time, drive continuous improvement, and utilize AI-driven metrics optimization."]},
+
+{id:14, category:"Testing & QA", title:"How are accessibility bugs reported, prioritized, and resolved in your backlog?", options:[
+"Accessibility bugs are neither reported nor fixed.",
+"Bugs are reported on an ad-hoc basis, and fixing only occurs for critical issues found late during UAT or in Production.",
+"Bugs are reported with some details (semi-automated tools without SME validation), and only critical bugs in new developments are prioritized (all others experience significant delays).",
+"Bugs are well-described with technical recommendations and reported semi-automatically. Bugs are resolved systematically in-sprint or in the immediate sprint following discovery (Sprint +1).",
+"Bug tracking features fully automated reporting, tracking, predictive analytics, proactive bug prevention, and instant automated remediation."]},
+
+{id:15, category:"People & Culture", title:"What is the level of accessibility awareness, training, and specialist expertise in your team?", options:[
+"No or low awareness of accessibility, and no accessibility Subject Matter Experts (SMEs) on the team.",
+"The team has basic awareness/knowledge, but there are still no accessibility SMEs on the team.",
+"The team has basic knowledge and is undergoing advanced training (not yet applied in practice), supported by an experienced accessibility knowledge holder on the team.",
+"The team is highly educated, actively applies training, and is supported by a dedicated SME with continuous knowledge sharing and certified specialists (e.g., Trusted Tester, IAAP CPACC, WAS).",
+"Culture of continuous training and certifications, supported by permanent IAAP/WAS certified specialists (or individuals with 4+ years of proven experience)."]},
+
+{id:16, category:"Process Integration", title:"How is accessibility integrated into your test documentation, and how is the overall process improved?", options:[
+"No testing documentation is maintained, and no process for continuous improvement exists.",
+"Documentation contains accessibility as a single high-level section (not followed in reality), and only ad-hoc improvement activities occur.",
+"Accessibility is a single section in functional test documentation (actively followed in reality), with regular reviews and updates conducted based on feedback.",
+"Comprehensive, regularly updated test plans with checklists and real project examples are used daily. Proactive monitoring, benchmarking, and process optimization are systematically executed.",
+"Living, AI-supported, and user-contributed documentation is automatically updated. The process achieves predictive, AI-driven improvement and clear industry leadership."]}
+];
+
+const OVERALL_DESC = {
+1:"Accessibility efforts are inconsistent, ad hoc, and largely unplanned across the organization. There is significant risk and opportunity for improvement.",
+2:"Basic awareness and initial efforts exist, but processes are not yet systematic or reliable.",
+3:"Accessibility processes are established in key areas, with regular engagement from teams — but coverage and consistency are still incomplete.",
+4:"Accessibility is embedded into processes, roles, and quality gates across the organization, delivering consistent, reliable outcomes.",
+5:"Accessibility is a strategic differentiator, driven by innovation, AI, and co-creation with users with disabilities."
+};
+
+let currentIndex = 0;
+let answers = {};
+
+const STORAGE_KEY = "a11y_maturity_progress_v1";
+
+function saveProgress(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({answers, currentIndex}));
+}
+function loadProgress(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return null;
+    return JSON.parse(raw);
+  }catch(e){return null;}
+}
+function clearProgress(){
+  localStorage.removeItem(STORAGE_KEY);
+}
+
+// ===== SCORING (по формуле из вашей таблицы) =====
+// Вес уровня: 1→0, 2→0.25, 3→0.5, 4→0.75, 5→1.0
+function levelToWeight(level){
+  return (level - 1) / 4;
+}
+// Пороги: <0.2 Opportunistic, <0.4 Developing, <0.6 Engaging, <0.8 Sustainable, <=1 Transformative
+function scoreToLevel(score){
+  if(score < 0.2) return 1;
+  if(score < 0.4) return 2;
+  if(score < 0.6) return 3;
+  if(score < 0.8) return 4;
+  return 5;
+}
+function computeScore(questionIds){
+  const weights = questionIds
+    .filter(id => answers[id])
+    .map(id => levelToWeight(answers[id]));
+  if(weights.length === 0) return 0;
+  return weights.reduce((a,b)=>a+b,0) / weights.length;
+}
+function computeDomainScores(){
+  const domains = {};
+  questions.forEach(q=>{
+    if(!domains[q.category]) domains[q.category] = [];
+    domains[q.category].push(q.id);
+  });
+  const result = {};
+  Object.keys(domains).forEach(cat=>{
+    result[cat] = computeScore(domains[cat]);
+  });
+  return result;
+}
+function levelColorForScore(score){
+  return LEVEL_COLORS[scoreToLevel(score)];
+}
+// ===================================================
+
+const introEl = document.getElementById("intro");
+const quizEl = document.getElementById("quiz");
+const resultsEl = document.getElementById("results");
+const startBtn = document.getElementById("startBtn");
+const resumeBtn = document.getElementById("resumeBtn");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const qCategory = document.getElementById("qCategory");
+const qTitle = document.getElementById("qTitle");
+const qOptions = document.getElementById("qOptions");
+const progressFill = document.getElementById("progressFill");
+const progressLabel = document.getElementById("progressLabel");
+const liveregion = document.getElementById("liveregion");
+
+const saved = loadProgress();
+if(saved && saved.answers && Object.keys(saved.answers).length>0){
+  resumeBtn.classList.remove("hidden");
+}
+
+startBtn.addEventListener("click", ()=>{
+  currentIndex = 0; answers = {};
+  clearProgress();
+  showQuiz();
+});
+resumeBtn.addEventListener("click", ()=>{
+  answers = saved.answers || {};
+  currentIndex = Math.min(saved.currentIndex || 0, questions.length-1);
+  showQuiz();
+});
+
+function showQuiz(){
+  introEl.classList.add("hidden");
+  resultsEl.classList.add("hidden");
+  quizEl.classList.remove("hidden");
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const q = questions[currentIndex];
+  qCategory.textContent = q.category;
+  qTitle.textContent = q.title;
+  qOptions.innerHTML = "";
+
+  q.options.forEach((text, i)=>{
+    const level = i+1;
+    const optId = `q${q.id}_opt${level}`;
+    const label = document.createElement("label");
+    label.className = "option";
+    label.setAttribute("for", optId);
+    if(answers[q.id] === level) label.classList.add("selected");
+
+    label.innerHTML = `
+      <input type="radio" name="q${q.id}" id="${optId}" value="${level}" ${answers[q.id]===level?"checked":""}>
+      <span class="lvl-tag" style="background:${LEVEL_COLORS[level]}"></span>
+      <span class="lvl-label">Level ${level}: ${LEVEL_NAMES[level]}.</span>
+      <span>${text}</span>
+    `;
+    qOptions.appendChild(label);
+
+    label.querySelector("input").addEventListener("change", ()=>{
+      answers[q.id] = level;
+      saveProgress();
+      Array.from(qOptions.children).forEach(el=>el.classList.remove("selected"));
+      label.classList.add("selected");
+      nextBtn.disabled = false;
+    });
+  });
+
+  nextBtn.disabled = !(q.id in answers);
+  prevBtn.disabled = currentIndex === 0;
+  nextBtn.textContent = currentIndex === questions.length - 1 ? "See Results →" : "Next →";
+
+  const pct = Math.round(((currentIndex)/questions.length)*100);
+  progressFill.style.width = pct + "%";
+  progressLabel.textContent = `Question ${currentIndex+1} of ${questions.length}`;
+  liveregion.textContent = `Question ${currentIndex+1} of ${questions.length}: ${q.title}`;
+}
+
+prevBtn.addEventListener("click", ()=>{
+  if(currentIndex>0){ currentIndex--; renderQuestion(); }
+});
+
+nextBtn.addEventListener("click", ()=>{
+  if(currentIndex < questions.length - 1){
+    currentIndex++;
+    renderQuestion();
+  } else {
+    finishAssessment();
+  }
+});
+
+function finishAssessment(){
+  quizEl.classList.add("hidden");
+  resultsEl.classList.remove("hidden");
+  clearProgress();
+
+  const allIds = questions.map(q=>q.id);
+  const totalScore = computeScore(allIds);
+  const overallLevel = scoreToLevel(totalScore);
+
+  document.getElementById("overallBox").style.background =
+    getComputedStyle(document.documentElement).getPropertyValue(`--l${overallLevel}`);
+  document.getElementById("overallNum").textContent =
+    `Level ${overallLevel} · Score: ${totalScore.toFixed(3)}`;
+  document.getElementById("overallName").textContent = LEVEL_NAMES[overallLevel];
+  document.getElementById("overallDesc").textContent = OVERALL_DESC[overallLevel];
+
+  const domainScores = computeDomainScores();
+  const domainChart = document.getElementById("domainChart");
+  domainChart.innerHTML = "";
+  Object.keys(domainScores).forEach(cat=>{
+    const score = domainScores[cat];
+    const level = scoreToLevel(score);
+    const pct = score * 100;
+    const row = document.createElement("div");
+    row.className = "domain-row";
+    row.innerHTML = `
+      <div class="domain-name"><span>${cat}</span><span>${score.toFixed(2)} — ${LEVEL_NAMES[level]}</span></div>
+      <div class="domain-track"><div class="domain-fill" style="width:${pct}%; background:${levelColorForScore(score)}"></div></div>
+    `;
+    domainChart.appendChild(row);
+  });
+
+  const summaryBody = document.getElementById("summaryBody");
+  summaryBody.innerHTML = "";
+  questions.forEach(q=>{
+    const lvl = answers[q.id] || 0;
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${q.id}</td><td>${q.title}</td><td><span class="lvl-tag" style="background:${LEVEL_COLORS[lvl]||'#ccc'}"></span>Level ${lvl} (${LEVEL_NAMES[lvl]||"—"})</td>`;
+    summaryBody.appendChild(tr);
+  });
+
+  window._lastResults = {totalScore, overallLevel, domainScores, answers: {...answers}};
+}
+
+document.getElementById("restartBtn").addEventListener("click", ()=>{
+  currentIndex = 0; answers = {};
+  clearProgress();
+  resultsEl.classList.add("hidden");
+  introEl.classList.remove("hidden");
+});
+
+document.getElementById("printBtn").addEventListener("click", ()=> window.print());
+
+document.getElementById("copyBtn").addEventListener("click", ()=>{
+  const r = window._lastResults;
+  if(!r) return;
+  let text = `Accessibility Maturity Assessment Results\n`;
+  text += `Overall Score: ${r.totalScore.toFixed(3)} — Level ${r.overallLevel} (${LEVEL_NAMES[r.overallLevel]})\n\n`;
+  text += `Domain scores:\n`;
+  Object.keys(r.domainScores).forEach(cat=>{
+    const lvl = scoreToLevel(r.domainScores[cat]);
+    text += `- ${cat}: ${r.domainScores[cat].toFixed(2)} (${LEVEL_NAMES[lvl]})\n`;
+  });
+  text += `\nDetailed answers:\n`;
+  questions.forEach(q=>{
+    const lvl = r.answers[q.id];
+    text += `${q.id}. ${q.title} → Level ${lvl} (${LEVEL_NAMES[lvl]})\n`;
+  });
+  navigator.clipboard.writeText(text).then(()=>{
+    alert("Results copied to clipboard!");
+  }).catch(()=>{
+    alert("Could not copy automatically. Please select and copy manually.");
+  });
+});
+
+})();
+</script>
+</body>
+</html>
