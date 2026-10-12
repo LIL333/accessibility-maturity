@@ -71,6 +71,21 @@
   .summary-table th{color:var(--muted); font-weight:600;}
   #liveregion{position:absolute; left:-9999px;}
   footer{text-align:center; color:var(--muted); font-size:.8rem; margin-top:40px;}
+  .notice-box{
+    background:#fff8e1;
+    border-left:4px solid #f9a825;
+    padding:14px 16px;
+    border-radius:8px;
+    margin:16px 0;
+    font-size:.92rem;
+  }
+  .notice-box.info{
+    background:#e8f0fe;
+    border-left-color:var(--accent);
+  }
+  .notice-box ul{margin:8px 0 0; padding-left:20px;}
+  .notice-box li{margin-bottom:6px;}
+  .notice-box strong.label{display:block; margin-bottom:4px;}
   @media print{
     button, .nav-buttons, .intro-actions{display:none !important;}
   }
@@ -88,7 +103,22 @@
   <section id="intro" class="card">
     <h2>Before you start</h2>
     <p>This assessment contains 16 questions covering strategy, design, development, testing, content, compliance, and culture. For each question, choose the description that best matches your project's <strong>current</strong> state.</p>
+
+    <div class="notice-box">
+      <strong class="label">📌 How to choose your answer:</strong>
+      <ul>
+        <li>If you haven't fully reached the next level, select the level where <strong>most criteria have already been fulfilled</strong> — not the aspirational one.</li>
+        <li>If you feel you're in between two levels, choose whichever one is <strong>most applicable overall</strong>.</li>
+      </ul>
+    </div>
+
+    <div class="notice-box info">
+      <strong class="label">⚠️ Please note:</strong>
+      This questionnaire provides a <strong>high-level self-assessment only</strong>. To confirm your actual maturity level with confidence, we recommend conducting structured interviews with your team and gathering as much supporting detail and evidence as possible.
+    </div>
+
     <p>It takes about 8–10 minutes. Your answers stay in your browser unless you choose to export them.</p>
+
     <div class="intro-actions">
       <button class="primary" id="startBtn">Start Assessment</button>
       <button class="secondary hidden" id="resumeBtn">Resume Previous Session</button>
@@ -148,89 +178,89 @@ const LEVEL_COLORS = {1:"var(--l1)",2:"var(--l2)",3:"var(--l3)",4:"var(--l4)",5:
 const LEVEL_NAMES = {1:"Opportunistic",2:"Developing",3:"Engaging",4:"Sustainable",5:"Transformative"};
 
 const questions = [
-{id:1, category:"Strategy & Governance", title:"How is digital accessibility supported, governed, and backed by stakeholders in your organization?", options:[
+{id:1, category:"Compliance & Reporting", title:"What standards (such as WCAG, legal, or corporate regulations) do you target and achieve?", options:[
+"Neither WCAG nor local/corporate accessibility standards are targeted or considered.",
+"Only partial WCAG standards are targeted (e.g., WCAG 2.0 or Level A), and ad-hoc checks are performed for local/corporate compliance.",
+"The team targets current WCAG standards (2.1/2.2) for main features (not full coverage) and conducts regular reviews for local/corporate compliance.",
+"Compliance with WCAG 2.2 AA is systematically targeted and achieved across the product, which is actively assessed against relevant local and corporate accessibility laws.",
+"Proactive adoption of emerging standards (such as WCAG 2.2 AAA) occurs, with proactive global monitoring, public compliance statements, and industry leadership."]},
+
+{id:2, category:"Strategy & Governance", title:"How is digital accessibility supported, governed, and backed by stakeholders in your organization?", options:[
 "No support for accessibility and no engagement with stakeholders.",
 "Occasional leadership support without clear ownership, and only sporadic communication with stakeholders.",
 "An accessibility champion is identified with basic governance, and stakeholders are regularly informed about accessibility efforts.",
 "Clear ownership and defined accessibility roles are established with regular reviews. Stakeholders are actively involved in planning and reviews.",
 "Accessibility is a strategic priority with C-level sponsorship and a dedicated board. Stakeholders actively co-create the accessibility strategy and innovation."]},
 
-{id:2, category:"Strategy & Governance", title:"Does your organization have a defined accessibility roadmap and clear metrics (KPIs)?", options:[
+{id:3, category:"Strategy & Governance", title:"Does your organization have a defined accessibility roadmap and clear metrics (KPIs)?", options:[
 "No accessibility roadmap or KPIs.",
 "Initial roadmap, basic KPIs defined.",
 "Roadmap and KPIs tracked, with some team accountability.",
 "Roadmap and KPIs are fully integrated into product strategy, with regular reporting.",
 "Accessibility KPIs actively drive innovation, public reporting, and industry benchmarking."]},
 
-{id:3, category:"Process Integration", title:"How early and systematically is accessibility built into your SDLC and user story requirements?", options:[
+{id:4, category:"Process Integration", title:"How early and systematically is accessibility built into your SDLC and user story requirements?", options:[
 "Accessibility is not considered in either the SDLC or product requirements.",
 "Accessibility is considered in some SDLC stages, and only high-level requirements exist in user stories, epics, tickets, or Confluence.",
 "Accessibility is included in most SDLC stages, and detailed acceptance criteria are routinely added to user stories.",
 "Accessibility is built into every SDLC stage and actively tracked, with strict accessibility criteria embedded directly in the Definition of Done (DoD) and Definition of Ready (DoR).",
 "All sustainable processes are in place, enhanced by next-generation, AI-driven requirement generation and validation with continuous feedback loops."]},
 
-{id:4, category:"Design & Development", title:"How is accessibility addressed during your project's UX/UI design phase?", options:[
+{id:5, category:"Design & Development", title:"How is accessibility addressed during your project's UX/UI design phase?", options:[
 "Accessibility is not considered in design.",
 "Accessibility is occasionally considered in design, but not consistently or systematically.",
 "Designs are checked by Figma plugins, and identified violations are fixed before handoff.",
 "Accessibility is considered during design creation with manual reviews and fully annotated layouts. No accessibility issues are found at the design level.",
 "Accessibility design processes are enhanced by AI tools and active user co-creation."]},
 
-{id:5, category:"Design & Development", title:"How do developers ensure coding accessibility and utilize standardized reusable components?", options:[
+{id:6, category:"Design & Development", title:"How do developers ensure coding accessibility and utilize standardized reusable components?", options:[
 "No accessibility coding standards, guidelines, or accessible component libraries are used.",
 "Some developers use basic practices (ARIA roles, alt text) and auto-tools, utilizing some accessible components without standardization.",
 "Most developers follow guidelines, use automated tools + manual checks (screen readers, keyboard), and utilize accessible components in most new features.",
 "Accessibility best practices are enforced via code reviews, linters, and quality gates in development pipelines, utilizing a standardized, fully accessible library of shared components.",
 "Developers utilize AI-driven code analysis, auto-remediation, and AI-generated and validated component libraries."]},
 
-{id:6, category:"Design & Development", title:"How does your team handle the accessibility of external third-party widgets, libraries, and components?", options:[
+{id:7, category:"Design & Development", title:"How does your team handle the accessibility of external third-party widgets, libraries, and components?", options:[
 "Accessibility of third-party components is unknown or not considered.",
 "Accessibility of third-party components is known but not actively addressed.",
 "The team actively seeks accessible alternatives or workarounds for third-party components.",
 "Only accessible third-party components are used, supported by regular reviews and audits.",
 "Proactive collaboration with vendors is established; custom or AI-enhanced accessible components are developed and shared."]},
 
-{id:7, category:"Content Accessibility", title:"How accessible are the digital documents, assets, and communications produced by your team?", options:[
+{id:8, category:"Content Accessibility", title:"How accessible are the digital documents, assets, and communications produced by your team?", options:[
 "Content, PDFs, and emails are provided without accessibility considerations.",
 "Some core content is created with basic accessibility, but PDFs and emails are often not accessible.",
 "Main content is accessible; some PDFs and emails are made accessible upon request.",
 "All content, PDFs, and emails are consistently created and delivered in accessible formats for all users.",
 "Content, PDFs, and emails are created accessible by default using advanced tools/AI; personalized accessible formats are provided automatically."]},
 
-{id:8, category:"Testing & QA", title:"How is manual accessibility testing integrated into your quality assurance process?", options:[
+{id:9, category:"Testing & QA", title:"How is manual accessibility testing integrated into your quality assurance process?", options:[
 "No accessibility testing.",
 "New features are tested with significant delays.",
 "In-sprint manual accessibility testing is conducted, but it is limited to selected WCAG criteria.",
 "Manual testing coverage is comprehensive: testing covers full WCAG criteria using proper tooling, configurations, and multiple languages.",
 "AI-driven manual testing and predictive issue detection are employed."]},
 
-{id:9, category:"Testing & QA", title:"How is automated accessibility testing integrated into your development and build pipelines?", options:[
+{id:10, category:"Testing & QA", title:"How is automated accessibility testing integrated into your development and build pipelines?", options:[
 "No automated tests.",
 "No automated tests.",
 "Automation covers basic smoke testing only.",
 "Automated testing coverage includes proper tooling, configurations, and languages, covering both new features and regression testing. AI solutions are in place for a limited scope.",
 "AI solutions are mature, delivering fully autonomous accessibility testing and reporting."]},
 
-{id:10, category:"Testing & QA", title:"How is accessibility validated on mobile viewports and native mobile applications?", options:[
+{id:11, category:"Testing & QA", title:"How is accessibility validated on mobile viewports and native mobile applications?", options:[
 "Mobile testing is not performed.",
 "Mobile testing is done solely on emulators or desktop browser developer tools.",
 "Mobile testing has limited coverage on actual physical mobile devices.",
 "Mobile testing is systematically done on real devices or mobile cloud farms utilizing Bluetooth keyboards and switch controls.",
 "Mobile accessibility is validated continuously with AI integrations and real user testers with disabilities."]},
 
-{id:11, category:"User Involvement", title:"How does your team gather and act on feedback from users with disabilities?", options:[
+{id:12, category:"User Involvement", title:"How does your team gather and act on feedback from users with disabilities?", options:[
 "No feedback from users with disabilities.",
 "Limited feedback from users with disabilities.",
 "Occasional feedback from users with disabilities is collected.",
 "Active involvement of users with disabilities in user testing and systematic feedback sessions.",
 "Users with disabilities co-create and validate features from early concepts to launch."]},
-
-{id:12, category:"Compliance & Reporting", title:"What standards (such as WCAG, legal, or corporate regulations) do you target and achieve?", options:[
-"Neither WCAG nor local/corporate accessibility standards are targeted or considered.",
-"Only partial WCAG standards are targeted (e.g., WCAG 2.0 or Level A), and ad-hoc checks are performed for local/corporate compliance.",
-"The team targets current WCAG standards (2.1/2.2) for main features (not full coverage) and conducts regular reviews for local/corporate compliance.",
-"Compliance with WCAG 2.2 AA is systematically targeted and achieved across the product, which is actively assessed against relevant local and corporate accessibility laws.",
-"Proactive adoption of emerging standards (such as WCAG 2.2 AAA) occurs, with proactive global monitoring, public compliance statements, and industry leadership."]},
 
 {id:13, category:"Compliance & Reporting", title:"How is your product's compliance state monitored, and what metrics are regularly reported?", options:[
 "Product compliance state is unknown (or based on auto-tools only), and no accessibility metrics are gathered.",
@@ -257,7 +287,7 @@ const questions = [
 "No testing documentation is maintained, and no process for continuous improvement exists.",
 "Documentation contains accessibility as a single high-level section (not followed in reality), and only ad-hoc improvement activities occur.",
 "Accessibility is a single section in functional test documentation (actively followed in reality), with regular reviews and updates conducted based on feedback.",
-"Comprehensive, regularly updated test plans with checklists and real project examples are used daily. Proactive monitoring, benchmarking, and process optimization are systematically executed.",
+"Comprehensive, regularly updated accessibility testing documentation (ex. detailed checklists, guidelines, real project examples etc.). Proactive monitoring, benchmarking, and process optimization are systematically executed.",
 "Living, AI-supported, and user-contributed documentation is automatically updated. The process achieves predictive, AI-driven improvement and clear industry leadership."]}
 ];
 
@@ -288,12 +318,10 @@ function clearProgress(){
   localStorage.removeItem(STORAGE_KEY);
 }
 
-// ===== SCORING (по формуле из вашей таблицы) =====
-// Вес уровня: 1→0, 2→0.25, 3→0.5, 4→0.75, 5→1.0
+// ===== SCORING =====
 function levelToWeight(level){
   return (level - 1) / 4;
 }
-// Пороги: <0.2 Opportunistic, <0.4 Developing, <0.6 Engaging, <0.8 Sustainable, <=1 Transformative
 function scoreToLevel(score){
   if(score < 0.2) return 1;
   if(score < 0.4) return 2;
@@ -424,12 +452,14 @@ function finishAssessment(){
   const allIds = questions.map(q=>q.id);
   const totalScore = computeScore(allIds);
   const overallLevel = scoreToLevel(totalScore);
+  const totalPercent = Math.round(totalScore * 100);
 
   document.getElementById("overallBox").style.background =
     getComputedStyle(document.documentElement).getPropertyValue(`--l${overallLevel}`);
   document.getElementById("overallNum").textContent =
-    `Level ${overallLevel} · Score: ${totalScore.toFixed(3)}`;
-  document.getElementById("overallName").textContent = LEVEL_NAMES[overallLevel];
+    `${totalPercent}% out of 100%`;
+  document.getElementById("overallName").textContent =
+    `Level ${overallLevel}: ${LEVEL_NAMES[overallLevel]}`;
   document.getElementById("overallDesc").textContent = OVERALL_DESC[overallLevel];
 
   const domainScores = computeDomainScores();
@@ -438,12 +468,12 @@ function finishAssessment(){
   Object.keys(domainScores).forEach(cat=>{
     const score = domainScores[cat];
     const level = scoreToLevel(score);
-    const pct = score * 100;
+    const percent = Math.round(score * 100);
     const row = document.createElement("div");
     row.className = "domain-row";
     row.innerHTML = `
-      <div class="domain-name"><span>${cat}</span><span>${score.toFixed(2)} — ${LEVEL_NAMES[level]}</span></div>
-      <div class="domain-track"><div class="domain-fill" style="width:${pct}%; background:${levelColorForScore(score)}"></div></div>
+      <div class="domain-name"><span>${cat}</span><span>${percent}% — ${LEVEL_NAMES[level]}</span></div>
+      <div class="domain-track"><div class="domain-fill" style="width:${percent}%; background:${levelColorForScore(score)}"></div></div>
     `;
     domainChart.appendChild(row);
   });
@@ -457,7 +487,7 @@ function finishAssessment(){
     summaryBody.appendChild(tr);
   });
 
-  window._lastResults = {totalScore, overallLevel, domainScores, answers: {...answers}};
+  window._lastResults = {totalScore, totalPercent, overallLevel, domainScores, answers: {...answers}};
 }
 
 document.getElementById("restartBtn").addEventListener("click", ()=>{
@@ -473,11 +503,12 @@ document.getElementById("copyBtn").addEventListener("click", ()=>{
   const r = window._lastResults;
   if(!r) return;
   let text = `Accessibility Maturity Assessment Results\n`;
-  text += `Overall Score: ${r.totalScore.toFixed(3)} — Level ${r.overallLevel} (${LEVEL_NAMES[r.overallLevel]})\n\n`;
+  text += `Overall Score: ${r.totalPercent}% out of 100% — Level ${r.overallLevel} (${LEVEL_NAMES[r.overallLevel]})\n\n`;
   text += `Domain scores:\n`;
   Object.keys(r.domainScores).forEach(cat=>{
     const lvl = scoreToLevel(r.domainScores[cat]);
-    text += `- ${cat}: ${r.domainScores[cat].toFixed(2)} (${LEVEL_NAMES[lvl]})\n`;
+    const pct = Math.round(r.domainScores[cat]*100);
+    text += `- ${cat}: ${pct}% (${LEVEL_NAMES[lvl]})\n`;
   });
   text += `\nDetailed answers:\n`;
   questions.forEach(q=>{
