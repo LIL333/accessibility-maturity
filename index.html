@@ -99,7 +99,6 @@
     <p>Evaluate your project's current digital accessibility maturity across 16 key dimensions.</p>
   </header>
 
-  <!-- INTRO -->
   <section id="intro" class="card">
     <h2>Before you start</h2>
     <p>This assessment contains 16 questions covering strategy, design, development, testing, content, compliance, and culture. For each question, choose the description that best matches your project's <strong>current</strong> state.</p>
@@ -125,7 +124,6 @@
     </div>
   </section>
 
-  <!-- QUESTION -->
   <section id="quiz" class="card hidden">
     <div class="progress-wrap">
       <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
@@ -144,7 +142,6 @@
     </div>
   </section>
 
-  <!-- RESULTS -->
   <section id="results" class="card hidden">
     <div class="overall-box" id="overallBox">
       <p class="lvl-num" id="overallNum"></p>
@@ -243,7 +240,7 @@ const questions = [
 
 {id:10, category:"Testing & QA", title:"How is automated accessibility testing integrated into your development and build pipelines?", options:[
 "No automated tests.",
-""No automated tests yet, but there are plans for future automation, or initial implementation has started.",
+"No automated tests yet, but there are plans for future automation, or initial implementation has started.",
 "Automation covers basic smoke testing only.",
 "Automated testing coverage includes proper tooling, configurations, and languages, covering both new features and regression testing. AI solutions are in place for a limited scope.",
 "AI solutions are mature, delivering fully autonomous accessibility testing and reporting."]},
@@ -318,7 +315,6 @@ function clearProgress(){
   localStorage.removeItem(STORAGE_KEY);
 }
 
-// ===== SCORING =====
 function levelToWeight(level){
   return (level - 1) / 4;
 }
@@ -351,7 +347,6 @@ function computeDomainScores(){
 function levelColorForScore(score){
   return LEVEL_COLORS[scoreToLevel(score)];
 }
-// ===================================================
 
 const introEl = document.getElementById("intro");
 const quizEl = document.getElementById("quiz");
