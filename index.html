@@ -96,7 +96,7 @@
 <div class="wrap">
   <header class="top">
     <h1>Accessibility Maturity Assessment</h1>
-    <p>Evaluate your project's current digital accessibility maturity across 16 key dimensions.</p>
+    <p>Evaluate your project's current digital accessibility maturity across 4 key dimensions.</p>
   </header>
 
   <section id="intro" class="card">
@@ -175,7 +175,7 @@ const LEVEL_COLORS = {1:"var(--l1)",2:"var(--l2)",3:"var(--l3)",4:"var(--l4)",5:
 const LEVEL_NAMES = {1:"Opportunistic",2:"Developing",3:"Engaging",4:"Sustainable",5:"Transformative"};
 
 const questions = [
-{id:1, category:"Compliance & Reporting", title:"What standards (such as WCAG, legal, or corporate regulations) do you target and achieve?", options:[
+{id:1, category:"Strategy & Governance", title:"What standards (such as WCAG, legal, or corporate regulations) do you target and achieve?", options:[
 "Neither WCAG nor local/corporate accessibility standards are targeted or considered.",
 "Only partial WCAG standards are targeted (e.g., WCAG 2.0 or Level A), and ad-hoc checks are performed for local/corporate compliance.",
 "The team targets current WCAG standards (2.1/2.2) for main features (not full coverage) and conducts regular reviews for local/corporate compliance.",
@@ -196,91 +196,91 @@ const questions = [
 "Roadmap and KPIs are fully integrated into product strategy, with regular reporting.",
 "Accessibility KPIs actively drive innovation, public reporting, and industry benchmarking."]},
 
-{id:4, category:"Process Integration", title:"How early and systematically is accessibility built into your SDLC and user story requirements?", options:[
+{id:4, category:"SDLC Integration", title:"How early and systematically is accessibility built into your SDLC and user story requirements?", options:[
 "Accessibility is not considered in either the SDLC or product requirements.",
 "Accessibility is considered in some SDLC stages, and only high-level requirements exist in user stories, epics, tickets, or Confluence.",
 "Accessibility is included in most SDLC stages, and detailed acceptance criteria are routinely added to user stories.",
 "Accessibility is built into every SDLC stage and actively tracked, with strict accessibility criteria embedded directly in the Definition of Done (DoD) and Definition of Ready (DoR).",
 "All sustainable processes are in place, enhanced by next-generation, AI-driven requirement generation and validation with continuous feedback loops."]},
 
-{id:5, category:"Design & Development", title:"How is accessibility addressed during your project's UX/UI design phase?", options:[
+{id:5, category:"SDLC Integration", title:"How is accessibility addressed during your project's UX/UI design phase?", options:[
 "Accessibility is not considered in design.",
 "Accessibility is occasionally considered in design, but not consistently or systematically.",
 "Designs are checked by Figma plugins, and identified violations are fixed before handoff.",
 "Accessibility is considered during design creation with manual reviews and fully annotated layouts. No accessibility issues are found at the design level.",
 "Accessibility design processes are enhanced by AI tools and active user co-creation."]},
 
-{id:6, category:"Design & Development", title:"How do developers ensure coding accessibility and utilize standardized reusable components?", options:[
+{id:6, category:"SDLC Integration", title:"How do developers ensure coding accessibility and utilize standardized reusable components?", options:[
 "No accessibility coding standards, guidelines, or accessible component libraries are used.",
 "Some developers use basic practices (ARIA roles, alt text) and auto-tools, utilizing some accessible components without standardization.",
 "Most developers follow guidelines, use automated tools + manual checks (screen readers, keyboard), and utilize accessible components in most new features.",
 "Accessibility best practices are enforced via code reviews, linters, and quality gates in development pipelines, utilizing a standardized, fully accessible library of shared components.",
 "Developers utilize AI-driven code analysis, auto-remediation, and AI-generated and validated component libraries."]},
 
-{id:7, category:"Design & Development", title:"How does your team handle the accessibility of external third-party widgets, libraries, and components?", options:[
+{id:7, category:"Specialized Accessibility Practices", title:"How does your team handle the accessibility of external third-party widgets, libraries, and components?", options:[
 "Accessibility of third-party components is unknown or not considered.",
 "Accessibility of third-party components is known but not actively addressed.",
 "The team actively seeks accessible alternatives or workarounds for third-party components.",
 "Only accessible third-party components are used, supported by regular reviews and audits.",
 "Proactive collaboration with vendors is established; custom or AI-enhanced accessible components are developed and shared."]},
 
-{id:8, category:"Content Accessibility", title:"How accessible are the digital documents, assets, and communications produced by your team?", options:[
+{id:8, category:"Specialized Accessibility Practices", title:"How accessible are the digital documents, assets, and communications produced by your team?", options:[
 "Content, PDFs, and emails are provided without accessibility considerations.",
 "Some core content is created with basic accessibility, but PDFs and emails are often not accessible.",
 "Main content is accessible; some PDFs and emails are made accessible upon request.",
 "All content, PDFs, and emails are consistently created and delivered in accessible formats for all users.",
 "Content, PDFs, and emails are created accessible by default using advanced tools/AI; personalized accessible formats are provided automatically."]},
 
-{id:9, category:"Testing & QA", title:"How is manual accessibility testing integrated into your quality assurance process?", options:[
+{id:9, category:"Testing & Reporting", title:"How is manual accessibility testing integrated into your quality assurance process?", options:[
 "No accessibility testing.",
 "New features are tested with significant delays.",
 "In-sprint manual accessibility testing is conducted, but it is limited to selected WCAG criteria.",
 "Manual testing coverage is comprehensive: testing covers full WCAG criteria using proper tooling, configurations, and multiple languages.",
 "AI-driven manual testing and predictive issue detection are employed."]},
 
-{id:10, category:"Testing & QA", title:"How is automated accessibility testing integrated into your development and build pipelines?", options:[
+{id:10, category:"Testing & Reporting", title:"How is automated accessibility testing integrated into your development and build pipelines?", options:[
 "No automated tests.",
 "No automated tests yet, but there are plans for future automation, or initial implementation has started.",
 "Automation covers basic smoke testing only.",
 "Automated testing coverage includes proper tooling, configurations, and languages, covering both new features and regression testing. AI solutions are in place for a limited scope.",
 "AI solutions are mature, delivering fully autonomous accessibility testing and reporting."]},
 
-{id:11, category:"Testing & QA", title:"How is accessibility validated on mobile viewports and native mobile applications?", options:[
+{id:11, category:"Testing & Reporting", title:"How is accessibility validated on mobile viewports and native mobile applications?", options:[
 "Mobile testing is not performed.",
 "Mobile testing is done solely on emulators or desktop browser developer tools.",
 "Mobile testing has limited coverage on actual physical mobile devices.",
 "Mobile testing is systematically done on real devices or mobile cloud farms utilizing Bluetooth keyboards and switch controls.",
 "Mobile accessibility is validated continuously with AI integrations and real user testers with disabilities."]},
 
-{id:12, category:"User Involvement", title:"How does your team gather and act on feedback from users with disabilities?", options:[
+{id:12, category:"Specialized Accessibility Practices", title:"How does your team gather and act on feedback from users with disabilities?", options:[
 "No feedback from users with disabilities.",
 "Limited feedback from users with disabilities.",
 "Occasional feedback from users with disabilities is collected.",
 "Active involvement of users with disabilities in user testing and systematic feedback sessions.",
 "Users with disabilities co-create and validate features from early concepts to launch."]},
 
-{id:13, category:"Compliance & Reporting", title:"How is your product's compliance state monitored, and what metrics are regularly reported?", options:[
+{id:13, category:"Testing & Reporting", title:"How is your product's compliance state monitored, and what metrics are regularly reported?", options:[
 "Product compliance state is unknown (or based on auto-tools only), and no accessibility metrics are gathered.",
 "Compliance state is only known for limited parts of the product, and metrics are based strictly on raw automated tools.",
 "The compliance state of the overall product is known, and periodic accessibility reports and metrics are compiled.",
 "The compliance state is actively monitored, the VPAT is regularly updated, and structured metrics analyses with remediation recommendations are provided on a regular basis.",
 "Compliance state and metrics are public, updated in real-time, drive continuous improvement, and utilize AI-driven metrics optimization."]},
 
-{id:14, category:"Testing & QA", title:"How are accessibility bugs reported, prioritized, and resolved in your backlog?", options:[
+{id:14, category:"Testing & Reporting", title:"How are accessibility bugs reported, prioritized, and resolved in your backlog?", options:[
 "Accessibility bugs are neither reported nor fixed.",
 "Bugs are reported on an ad-hoc basis, and fixing only occurs for critical issues found late during UAT or in Production.",
 "Bugs are reported with some details (semi-automated tools without SME validation), and only critical bugs in new developments are prioritized (all others experience significant delays).",
 "Bugs are well-described with technical recommendations and reported semi-automatically. Bugs are resolved systematically in-sprint or in the immediate sprint following discovery (Sprint +1).",
 "Bug tracking features fully automated reporting, tracking, predictive analytics, proactive bug prevention, and instant automated remediation."]},
 
-{id:15, category:"People & Culture", title:"What is the level of accessibility awareness, training, and specialist expertise in your team?", options:[
+{id:15, category:"SDLC Integration", title:"What is the level of accessibility awareness, training, and specialist expertise in your team?", options:[
 "No or low awareness of accessibility, and no accessibility Subject Matter Experts (SMEs) on the team.",
 "The team has basic awareness/knowledge, but there are still no accessibility SMEs on the team.",
 "The team has basic knowledge and is undergoing advanced training (not yet applied in practice), supported by an experienced accessibility knowledge holder on the team.",
 "The team is highly educated, actively applies training, and is supported by a dedicated SME with continuous knowledge sharing and certified specialists (e.g., Trusted Tester, IAAP CPACC, WAS).",
 "Culture of continuous training and certifications, supported by permanent IAAP/WAS certified specialists (or individuals with 4+ years of proven experience)."]},
 
-{id:16, category:"Process Integration", title:"How is accessibility integrated into your test documentation, and how is the overall process improved?", options:[
+{id:16, category:"Strategy & Governance", title:"How is accessibility integrated into your test documentation, and how is the overall process improved?", options:[
 "No testing documentation is maintained, and no process for continuous improvement exists.",
 "Documentation contains accessibility as a single high-level section (not followed in reality), and only ad-hoc improvement activities occur.",
 "Accessibility is a single section in functional test documentation (actively followed in reality), with regular reviews and updates conducted based on feedback.",
